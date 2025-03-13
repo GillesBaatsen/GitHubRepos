@@ -1,0 +1,20 @@
+<resources>
+	<string name="app_name">ABN AMRO GitHub Repos</string>
+	<string name="details">Repo details</string>
+	<string name="loading_error">Error loading data</string>
+	<string name="retry">Retry</string>
+	<string name="open_in_browser">Open in browser</string>
+	<string name="name">Name</string>
+	<string name="full_name">Full name</string>
+	<string name="description">Description</string>
+	<string name="visibility">Visibility</string>
+	<string name="is_private">Private</string>
+	<string name="yes">yes</string>
+	<string name="no">no</string>
+	<string name="error_loading_url">Error loading URL</string>
+	<string name="previous">Previous</string>
+	<string name="next">Next</string>
+	<string name="back">Back</string>
+	<string name="no_items">No repos available</string>
+
+</resources>
