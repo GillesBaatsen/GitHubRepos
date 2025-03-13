@@ -1,7 +1,6 @@
 Hi, here's the assignment:
 
-Create an app that shows ABN AMRO GitHub repositories. The App contains 2
-screens; list screen and detail screen. &#9989;
+The App contains 2 screens; list screen and detail screen. &#9989;
 
 The list screen shows (paginated) list of repos with the following data per item:
 - Name &#9989;
