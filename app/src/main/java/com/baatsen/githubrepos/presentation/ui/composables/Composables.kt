@@ -1,7 +1,6 @@
 package com.baatsen.githubrepos.presentation.ui.composables
 
 import android.content.Intent
-import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -25,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.baatsen.githubrepos.R
@@ -49,7 +49,7 @@ fun OpenUrlButton(url: String, modifier: Modifier = Modifier) {
 	) {
 		Button(onClick = {
 			try {
-				val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+				val intent = Intent(Intent.ACTION_VIEW, url.toUri())
 				context.startActivity(intent)
 			} catch(e: Exception) {
 				Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
