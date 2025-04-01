@@ -24,7 +24,7 @@ class MainViewModel(
 			val result = fetchGithubReposUseCase(pageState.currentPage)
 			_uiState.value = result.fold(
 				onSuccess = { list ->
-					if (list.size < PER_PAGE) pageState.updateMaxPage()
+					if(list.size < PER_PAGE) pageState.updateMaxPage()
 					UiState.Success(
 						list = list,
 						canGoBack = pageState.canGoBack,
@@ -37,14 +37,14 @@ class MainViewModel(
 	}
 	
 	fun pageBack() {
-		if (pageState.canGoBack) {
+		if(pageState.canGoBack) {
 			pageState.previousPage()
 			fetchRepositories()
 		}
 	}
 	
 	fun pageForward() {
-		if (pageState.canGoForward) {
+		if(pageState.canGoForward) {
 			pageState.nextPage()
 			fetchRepositories()
 		}

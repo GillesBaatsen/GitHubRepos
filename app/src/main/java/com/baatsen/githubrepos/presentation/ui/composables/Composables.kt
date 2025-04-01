@@ -32,19 +32,19 @@ import com.baatsen.githubrepos.presentation.ui.main.NavigationRoutes.Companion.D
 import com.baatsen.githubrepos.presentation.ui.main.NavigationRoutes.Companion.HOME
 
 @Composable
-fun TitleValueText(title: String, value: String?) {
-	Row {
+fun TitleValueText(title: String, value: String?, modifier: Modifier = Modifier) {
+	Row(modifier = modifier) {
 		Text(text = title, modifier = Modifier.padding(end = 8.dp), fontWeight = FontWeight.Bold)
 		Text(text = value ?: "")
 	}
 }
 
 @Composable
-fun OpenUrlButton(url: String) {
+fun OpenUrlButton(url: String, modifier: Modifier = Modifier) {
 	val context = LocalContext.current
 	val errorMessage = stringResource(R.string.error_loading_url)
 	Box(
-		modifier = Modifier.fillMaxWidth(),
+		modifier = modifier.fillMaxWidth(),
 		contentAlignment = Alignment.Center
 	) {
 		Button(onClick = {
@@ -105,7 +105,7 @@ private fun TopAppBarTitle(currentRoute: String?) {
 		DETAILS -> stringResource(R.string.details)
 		else -> ""
 	}
-	Text(text = title)
+	Text(text = title, maxLines = 1)
 }
 
 @Preview(showBackground = true)

@@ -16,18 +16,19 @@ data class PageState(
 	var currentPage: Int = 1,
 	var maxPage: Int = -1,
 ) {
+	
 	val canGoBack: Boolean get() = currentPage > 1
 	val canGoForward: Boolean get() = maxPage == -1 || currentPage < maxPage
 	
 	fun nextPage() {
-		if (canGoForward) currentPage++
+		if(canGoForward) currentPage++
 	}
 	
 	fun previousPage() {
-		if (canGoBack) currentPage--
+		if(canGoBack) currentPage--
 	}
 	
 	fun updateMaxPage() {
-		if (maxPage == -1 || currentPage > maxPage) maxPage = currentPage
+		if(maxPage == -1 || currentPage > maxPage) maxPage = currentPage
 	}
 }
