@@ -1,6 +1,6 @@
-package com.baatsen.githubrepos.services
+package com.baatsen.githubrepos.data.remote
 
-import com.baatsen.githubrepos.data.models.GitHubResponseItem
+import com.baatsen.githubrepos.data.model.GitHubApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -10,5 +10,5 @@ interface GitHubService {
 	suspend fun getRepos(
 		@Query("page") page: Int,
 		@Query("per_page") perPage: Int,
-	): List<GitHubResponseItem>
+	): List<GitHubApiResponse>
 }

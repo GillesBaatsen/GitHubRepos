@@ -35,6 +35,10 @@ android {
 	buildFeatures {
 		compose = true
 	}
+	
+	tasks.withType<Test> {
+		useJUnitPlatform()
+	}
 }
 
 dependencies {
@@ -57,7 +61,7 @@ dependencies {
 	implementation(libs.koin.android)
 	implementation(libs.coil.compose)
 	implementation(libs.kotlinx.serialization.json)
-	testImplementation(libs.junit)
+	testImplementation(libs.junit.jupiter)
 	testImplementation(libs.mockk.android)
 	testImplementation(libs.kotlinx.kotlinx.coroutines.test)
 	androidTestImplementation(libs.androidx.junit)
@@ -66,4 +70,5 @@ dependencies {
 	androidTestImplementation(libs.androidx.ui.test.junit4)
 	debugImplementation(libs.androidx.ui.tooling)
 	debugImplementation(libs.androidx.ui.test.manifest)
+	testImplementation(kotlin("test"))
 }

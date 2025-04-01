@@ -1,10 +1,10 @@
-package com.baatsen.githubrepos.di
+package com.baatsen.githubrepos.presentation.di
 
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
-import com.baatsen.githubrepos.services.GitHubService
+import com.baatsen.githubrepos.data.remote.GitHubService
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -22,6 +22,7 @@ import java.io.File
 import java.util.concurrent.TimeUnit
 
 const val CACHE_CONTROL_HEADER = "Cache-Control"
+const val BASE_URL = "https://api.github.com/users/abnamrocoesd/"
 const val TEN_MEGABYTE = 10 * 1024 * 1024L
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -29,7 +30,7 @@ val networkModule = module {
 	
 	val logging = HttpLoggingInterceptor().apply { setLevel(HttpLoggingInterceptor.Level.BODY) }
 	
-	single {
+	factory {
 		val cacheDir = File(get<Context>().cacheDir, "http")
 		val cache = Cache(
 			cacheDir,
@@ -53,19 +54,19 @@ val networkModule = module {
 		return json.asConverterFactory(contentType)
 	}
 	
-	single { CacheInterceptor(get()) }
-	single { provideJson() }
-	single { provideKotlinSerialization(get()) }
+	factory { CacheInterceptor(get()) }
+	factory { provideJson() }
+	factory { provideKotlinSerialization(get()) }
 	
-	single<Retrofit> {
+	factory<Retrofit> {
 		Retrofit.Builder()
 			.client(get())
-			.baseUrl("https://api.github.com/users/abnamrocoesd/")
+			.baseUrl(BASE_URL)
 			.addConverterFactory(provideKotlinSerialization(provideJson()))
 			.build()
 	}
 	
-	single {
+	factory {
 		get<Retrofit>().create(GitHubService::class.java)
 	}
 }
@@ -101,4 +102,3 @@ class CacheInterceptor(private val context: Context) : Interceptor {
 		}
 	}
 }
-

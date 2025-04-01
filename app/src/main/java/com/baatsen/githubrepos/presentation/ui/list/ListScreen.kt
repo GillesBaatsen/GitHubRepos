@@ -1,4 +1,4 @@
-package com.baatsen.githubrepos.ui.list
+package com.baatsen.githubrepos.presentation.ui.list
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,10 +25,10 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import com.baatsen.githubrepos.R
-import com.baatsen.githubrepos.data.models.GitHubResponseItem
-import com.baatsen.githubrepos.data.models.Owner
-import com.baatsen.githubrepos.ui.UiState
-import com.baatsen.githubrepos.ui.composables.TitleValueText
+import com.baatsen.githubrepos.domain.model.GitHubItem
+import com.baatsen.githubrepos.domain.model.Owner
+import com.baatsen.githubrepos.presentation.ui.composables.TitleValueText
+import com.baatsen.githubrepos.presentation.ui.main.UiState
 
 @Composable
 fun ListScreen(uiState: UiState, onRetryClick: () -> Unit, navController: NavController) {
@@ -67,7 +67,7 @@ fun ListScreen(uiState: UiState, onRetryClick: () -> Unit, navController: NavCon
 						navController = navController
 					)
 				}
-				if (repoItems.isEmpty()) {
+				if(repoItems.isEmpty()) {
 					item {
 						Box(
 							modifier = Modifier.fillMaxSize(),
@@ -83,7 +83,7 @@ fun ListScreen(uiState: UiState, onRetryClick: () -> Unit, navController: NavCon
 }
 
 @Composable
-fun RepoItem(repoItem: GitHubResponseItem, navController: NavController) {
+fun RepoItem(repoItem: GitHubItem, navController: NavController) {
 	Row(
 		verticalAlignment = Alignment.CenterVertically,
 		modifier = Modifier
@@ -106,18 +106,18 @@ fun RepoItem(repoItem: GitHubResponseItem, navController: NavController) {
 		Column {
 			TitleValueText(stringResource(R.string.name), repoItem.name)
 			TitleValueText(stringResource(R.string.visibility), repoItem.visibility)
-			TitleValueText(stringResource(R.string.is_private), if(repoItem.private) stringResource(R.string.yes) else stringResource(R.string.no))
+			TitleValueText(stringResource(R.string.is_private), if(repoItem.isPrivate) stringResource(R.string.yes) else stringResource(R.string.no))
 		}
 	}
 }
 
-fun getFakeRepoItem(id: Long = 1L) = GitHubResponseItem(
+fun getFakeRepoItem(id: Long = 1L) = GitHubItem(
 	id = id,
 	name = "Sample Repo $id",
 	fullName = "User/SampleRepo$id",
 	description = "This is a sample repository $id.",
 	visibility = "public",
-	private = false,
+	isPrivate = false,
 	owner = Owner(avatarUrl = ""),
 	htmlUrl = ""
 )
@@ -132,7 +132,7 @@ fun RepoItemPreview() {
 @Composable
 fun ListScreenPreview() {
 	val dummyUiState = UiState.Success(
-		List(5) { index -> getFakeRepoItem(index.toLong()) }
+		List(5) { index -> getFakeRepoItem(index.toLong()) }, canGoBack = true, canGoForward = true
 	)
 	
 	ListScreen(
@@ -145,7 +145,7 @@ fun ListScreenPreview() {
 @Preview(showBackground = true)
 @Composable
 fun ListScreenEmptyPreview() {
-	val dummyUiState = UiState.Success(emptyList())
+	val dummyUiState = UiState.Success(emptyList(), canGoBack = true, canGoForward = true)
 	
 	ListScreen(
 		uiState = dummyUiState,
@@ -165,6 +165,7 @@ fun ListScreenErrorPreview() {
 		navController = rememberNavController(),
 	)
 }
+
 @Preview(showBackground = true)
 @Composable
 fun ListScreenLoadingPreview() {

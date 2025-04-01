@@ -1,4 +1,4 @@
-package com.baatsen.githubrepos.ui.details
+package com.baatsen.githubrepos.presentation.ui.details
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,13 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.baatsen.githubrepos.R
-import com.baatsen.githubrepos.data.models.GitHubResponseItem
-import com.baatsen.githubrepos.data.models.Owner
-import com.baatsen.githubrepos.ui.composables.OpenUrlButton
-import com.baatsen.githubrepos.ui.composables.TitleValueText
+import com.baatsen.githubrepos.domain.model.GitHubItem
+import com.baatsen.githubrepos.domain.model.Owner
+import com.baatsen.githubrepos.presentation.ui.composables.OpenUrlButton
+import com.baatsen.githubrepos.presentation.ui.composables.TitleValueText
 
 @Composable
-fun DetailsScreen(repoItem: GitHubResponseItem) {
+fun DetailsScreen(repoItem: GitHubItem) {
 	Column(
 		modifier = Modifier
 			.fillMaxSize()
@@ -47,7 +47,7 @@ fun DetailsScreen(repoItem: GitHubResponseItem) {
 		TitleValueText(stringResource(R.string.full_name), repoItem.fullName)
 		TitleValueText(stringResource(R.string.description), repoItem.description)
 		TitleValueText(stringResource(R.string.visibility), repoItem.visibility)
-		TitleValueText(stringResource(R.string.is_private), if(repoItem.private) stringResource(R.string.yes) else stringResource(R.string.no))
+		TitleValueText(stringResource(R.string.is_private), if(repoItem.isPrivate) stringResource(R.string.yes) else stringResource(R.string.no))
 		OpenUrlButton(repoItem.htmlUrl)
 	}
 }
@@ -55,14 +55,14 @@ fun DetailsScreen(repoItem: GitHubResponseItem) {
 @Preview(showBackground = true)
 @Composable
 fun DetailsScreenPreview() {
-	val repoItem = GitHubResponseItem(
+	val repoItem = GitHubItem(
 		id = 1L,
 		name = "Sample Repo",
 		fullName = "user/sample-repo",
 		owner = Owner(avatarUrl = ""),
 		description = "This is a sample description.",
 		visibility = "Public",
-		private = false,
+		isPrivate = false,
 		htmlUrl = ""
 	)
 	

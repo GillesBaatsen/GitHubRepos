@@ -1,4 +1,4 @@
-package com.baatsen.githubrepos.ui
+package com.baatsen.githubrepos.presentation.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,12 +16,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.baatsen.githubrepos.ui.NavigationRoutes.Companion.DETAILS
-import com.baatsen.githubrepos.ui.NavigationRoutes.Companion.HOME
-import com.baatsen.githubrepos.ui.composables.AppBarWithNavigation
-import com.baatsen.githubrepos.ui.details.DetailsScreen
-import com.baatsen.githubrepos.ui.list.ListScreen
-import com.baatsen.githubrepos.ui.theme.GitHubReposTheme
+import com.baatsen.githubrepos.presentation.ui.composables.AppBarWithNavigation
+import com.baatsen.githubrepos.presentation.ui.details.DetailsScreen
+import com.baatsen.githubrepos.presentation.ui.list.ListScreen
+import com.baatsen.githubrepos.presentation.ui.main.NavigationRoutes.Companion.DETAILS
+import com.baatsen.githubrepos.presentation.ui.main.NavigationRoutes.Companion.HOME
+import com.baatsen.githubrepos.presentation.ui.theme.GitHubReposTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 sealed class NavigationRoutes {
@@ -38,17 +38,20 @@ class MainActivity : ComponentActivity() {
 	
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		viewModel.loadData()
+		viewModel.fetchRepositories()
 		enableEdgeToEdge()
 		setContent {
 			GitHubReposTheme {
 				val navController = rememberNavController()
 				val backStackEntry by navController.currentBackStackEntryAsState()
 				val currentRoute = backStackEntry?.destination?.route
+				val uiState by viewModel.uiState.collectAsState()
 				Scaffold(
 					topBar = {
 						AppBarWithNavigation(
 							currentRoute = currentRoute,
+							canGoBack = if(uiState is UiState.Success) (uiState as UiState.Success).canGoBack else false,
+							canGoForward = if(uiState is UiState.Success) (uiState as UiState.Success).canGoForward else false,
 							navController = navController,
 							onPageBack = { viewModel.pageBack() },
 							onPageForward = { viewModel.pageForward() },
@@ -58,10 +61,9 @@ class MainActivity : ComponentActivity() {
 					Column(modifier = Modifier.padding(innerPadding)) {
 						NavHost(navController = navController, startDestination = HOME) {
 							composable("home") {
-								val uiState by viewModel.uiState.collectAsState()
 								ListScreen(
 									uiState = uiState,
-									onRetryClick = { viewModel.loadData() },
+									onRetryClick = { viewModel.fetchRepositories() },
 									navController = navController,
 								)
 							}

@@ -1,4 +1,4 @@
-package com.baatsen.githubrepos.ui.theme
+package com.baatsen.githubrepos.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

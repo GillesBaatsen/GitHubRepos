@@ -1,4 +1,4 @@
-package com.baatsen.githubrepos.ui.composables
+package com.baatsen.githubrepos.presentation.ui.composables
 
 import android.content.Intent
 import android.net.Uri
@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.baatsen.githubrepos.R
-import com.baatsen.githubrepos.ui.NavigationRoutes.Companion.DETAILS
-import com.baatsen.githubrepos.ui.NavigationRoutes.Companion.HOME
+import com.baatsen.githubrepos.presentation.ui.main.NavigationRoutes.Companion.DETAILS
+import com.baatsen.githubrepos.presentation.ui.main.NavigationRoutes.Companion.HOME
 
 @Composable
 fun TitleValueText(title: String, value: String?) {
@@ -64,6 +64,8 @@ fun OpenUrlButton(url: String) {
 @Composable
 fun AppBarWithNavigation(
 	currentRoute: String?,
+	canGoBack: Boolean,
+	canGoForward: Boolean,
 	navController: NavController,
 	onPageBack: () -> Unit,
 	onPageForward: () -> Unit,
@@ -79,13 +81,13 @@ fun AppBarWithNavigation(
 		title = { TopAppBarTitle(currentRoute) },
 		actions = {
 			if(currentRoute == HOME) {
-				IconButton(onClick = { onPageBack() }) {
+				IconButton(onClick = { onPageBack() }, enabled = canGoBack) {
 					Icon(
 						imageVector = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
 						contentDescription = stringResource(R.string.previous),
 					)
 				}
-				IconButton(onClick = { onPageForward() }) {
+				IconButton(onClick = { onPageForward() }, enabled = canGoForward) {
 					Icon(
 						imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
 						contentDescription = stringResource(R.string.next),
@@ -125,6 +127,8 @@ fun PreviewAppBarWithNavigationHome() {
 	
 	AppBarWithNavigation(
 		currentRoute = HOME,
+		canGoBack = true,
+		canGoForward = true,
 		navController = navController,
 		onPageBack = {},
 		onPageForward = {},
@@ -138,6 +142,8 @@ fun PreviewAppBarWithNavigationDetails() {
 	
 	AppBarWithNavigation(
 		currentRoute = DETAILS,
+		canGoBack = true,
+		canGoForward = true,
 		navController = navController,
 		onPageBack = {},
 		onPageForward = {},
